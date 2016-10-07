@@ -21,5 +21,5 @@
   :uberjar-name "server.jar"
   :profiles {:profiles {:uberjar {:aot :all}}
              :dev {:dependencies [[javax.servlet/javax.servlet-api "3.1.0"]
-                                  [cider/cider-nrepl "0.14.0-snapshot"]]
+                                  [cider/cider-nrepl "0.14.0-SNAPSHOT"]]
                    :plugins [[ikitommi/lein-ring "0.9.8-FIX"]]}})
