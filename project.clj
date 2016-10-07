@@ -2,6 +2,7 @@
   :description "Krakus story written in functions"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [metosin/compojure-api "1.1.8"]]
+  :min-lein-version "2.6.1"
   :ring {:handler clj-krakus.handler/app
          :nrepl {:start? true}}
   :repl-options {:nrepl-middleware

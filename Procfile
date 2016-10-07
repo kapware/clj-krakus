@@ -1,1 +1,1 @@
-web: java $JVM_OPTS -jar target/server.jar
+web: lein ring server-headless $PORT
