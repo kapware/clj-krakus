@@ -1,4 +1,14 @@
-(ns clj-krakus.story)
+(ns clj-krakus.story
+  (:require [clojure.spec :as s]))
+
+(s/def ::name (s/and string? not-empty))
+(s/def ::health number?)
+
+(s/def ::citizen (s/keys :req-un [::name ::health]))
+
+(s/fdef citizen
+        :args (s/cat :name ::name)
+        :ret ::citizen)
 
 (defn citizen [name]
   {:name name :health 100})
@@ -33,12 +43,9 @@
 (defn food [modifier]
   {:energy modifier :size 10})
 
-(defn beverage [modifier]
-  {:thirst (- modifier) :size 10})
-
 (defn ram [] (food 10))
 (defn cow [] (food 20))
-(defn water [] (beverage 5))
+(defn water [] {:thirst -1 :size 10})
 
 (defn eat [who what]
   (merge-with + who what))
@@ -46,7 +53,7 @@
 (defn hungry? [who]
   (< (:energy who 0) 100))
 
-(defn produce[structure good]
+(defn store [structure good]
   (update structure :goods (fnil conj []) good))
 
 (defn vector-index [pred coll]
@@ -75,13 +82,13 @@
   (citizen name))
 
 (defn sulfur[]
-  (beverage -500))
+  {:thirst 500})
 
 (defn tar[]
-  (beverage -500))
+  {:size 500})
 
 (defn ram-with-sulfur-and-tar[]
-  (merge-with + (sulfur) (tar)))
+  (merge-with + (ram) (sulfur) (tar)))
 
 (defn thirsty? [who]
   (> (:thirst who) 50))
@@ -90,7 +97,7 @@
   (> (:thirst who) 100))
 
 (defn vistula[]
-  (repeatedly #(beverage 1)))
+  (repeatedly water))
 
 (defn inhabitants-by-name [structure inhabitant-name]
   (filter #(= (:name %) inhabitant-name) (:citizens structure)))
@@ -128,6 +135,11 @@
   [pos coll]
   (vec (concat (subvec coll 0 pos) (subvec coll (inc pos)))))
 
+(defn pieceof [who no]
+  (-> who
+      (update :name str "-" no)
+      (assoc :health -1000)))
+
 (defn blow-to-pieces [structure target-name]
   (let [target-index (inhabitant-index-by-name structure target-name)]
     (as-> structure xs
@@ -137,14 +149,14 @@
 (defn collect-dead [structure]
   (update structure :citizens #(vec (remove dead? %))))
 
-(defn produce-all [structure coll]
-  (reduce produce structure coll))
+(defn store-all [structure coll]
+  (reduce store structure coll))
 
 (defn story []
   [#(occupy % king "Krakus")
    #(occupy % knight "Małowuj" "Minigniew" "Gromisław" "Nowosiodł" "Twardomir" "Włościobyt")
-   #(produce-all % (repeatedly 20 cow))
-   #(produce-all % (repeatedly 50 ram))
+   #(store-all % (repeatedly 20 cow))
+   #(store-all % (repeatedly 50 ram))
    #(occupy % dragon "Smok")
    #(consume-all %)
    #(attack-some % "Smok" "Małowuj" "Minigniew" "Gromisław" "Nowosiodł" "Twardomir" "Włościobyt")
@@ -152,9 +164,9 @@
    #(collect-dead %)
    #(occupy % cobbler "Skuba")
    #(consume-all %)
-   #(produce % (ram-with-sulfur-and-tar))
+   #(store % (ram-with-sulfur-and-tar))
    #(consume-all %)
-   #(produce-all % (take 100 (vistula)))
+   #(store-all % (take 100 (vistula)))
    #(consume-all %)
    #(blow-to-pieces % "Smok")])
 

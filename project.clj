@@ -1,6 +1,6 @@
 (defproject clj-krakus "0.1.0-SNAPSHOT"
   :description "Krakus story written in functions"
-  :dependencies [[org.clojure/clojure "1.8.0"]
+  :dependencies [[org.clojure/clojure "1.9.0-alpha13"]
                  [metosin/compojure-api "1.1.8"]]
   :min-lein-version "2.6.1"
   :ring {:handler clj-krakus.handler/app}
@@ -8,8 +8,13 @@
   :profiles {:uberjar {:aot :all
                        :main clj-krakus.main}
              :dev {:dependencies [[javax.servlet/javax.servlet-api "3.1.0"]
-                                  [cider/cider-nrepl "0.14.0-SNAPSHOT"]]
-                   :plugins [[ikitommi/lein-ring "0.9.8-FIX"]]
+                                  [cider/cider-nrepl "0.14.0-SNAPSHOT"]
+                                  [cheshire "5.5.0"]
+                                  [ring/ring-mock "0.3.0"]
+                                  [midje "1.9.0-alpha5"]
+                                  [org.clojure/test.check "0.9.0"]]
+                   :plugins [[ikitommi/lein-ring "0.9.8-FIX"]
+                             [lein-midje "3.2"]]
                    :ring {:handler clj-krakus.handler/app
                           :nrepl {:start? true}}
                    :repl-options {:nrepl-middleware

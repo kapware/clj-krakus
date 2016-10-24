@@ -24,4 +24,11 @@ java -jar target/server.jar
 
 `lein with-profile dev ring server`
 
+### Running midje autotest from repl:
+
+```
+(use 'midje.repl)
+(autotest)
+```
+
 Copyright ©kapware.com
