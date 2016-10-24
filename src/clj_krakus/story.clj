@@ -31,10 +31,10 @@
    :power 1000})
 
 (defn food [modifier]
-  {:stamina modifier :capacity 10})
+  {:energy modifier :size 10})
 
 (defn beverage [modifier]
-  {:thirst (- modifier) :capacity 10})
+  {:thirst (- modifier) :size 10})
 
 (defn ram [] (food 10))
 (defn cow [] (food 20))
@@ -44,7 +44,7 @@
   (merge-with + who what))
 
 (defn hungry? [who]
-  (< (:stamina who 0) 100))
+  (< (:energy who 0) 100))
 
 (defn produce[structure good]
   (update structure :goods (fnil conj []) good))
@@ -106,8 +106,8 @@
 
 (defn tire[who]
   (-> who
-      (update :stamina (fnil - 0) 10)
-      (update :capacity (fnil - 0) 10)))
+      (update :energy (fnil - 0) 10)
+      (update :size (fnil - 0) 10)))
 
 (defn attack-by-name[structure target-name attacker-name]
   (let [target-index (inhabitant-index-by-name structure target-name)
