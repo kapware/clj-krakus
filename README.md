@@ -20,7 +20,7 @@ java -jar target/server.jar
 `lein ring uberwar`
 
 
-### Running for developmetn
+### Running for development
 
 `lein with-profile dev ring server`
 
