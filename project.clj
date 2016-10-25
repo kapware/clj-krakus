@@ -1,7 +1,8 @@
 (defproject clj-krakus "0.1.0-SNAPSHOT"
   :description "Krakus story written in functions"
   :dependencies [[org.clojure/clojure "1.9.0-alpha13"]
-                 [metosin/compojure-api "1.1.8"]]
+                 [metosin/compojure-api "1.1.8"]
+                 [http-kit "2.2.0"]]
   :min-lein-version "2.6.1"
   :ring {:handler clj-krakus.handler/app}
   :uberjar-name "server.jar"
